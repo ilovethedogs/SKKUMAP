@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".dialogs.AddclassDialog">
+
+    <TextView
+        android:id="@+id/tvAddClassDisplay0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Adding a class"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.019"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvAddClassDisplay1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Name"
+        app:layout_constraintStart_toStartOf="@+id/tvAddClassDisplay0"
+        app:layout_constraintTop_toBottomOf="@+id/tvAddClassDisplay0" />
+
+    <TextView
+        android:id="@+id/tvAddClassDisplay2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Classroom"
+        app:layout_constraintStart_toStartOf="@+id/tvAddClassDisplay1"
+        app:layout_constraintTop_toBottomOf="@+id/tvAddClassDisplay1" />
+
+    <TextView
+        android:id="@+id/tvAddClassDisplay3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Day"
+        app:layout_constraintStart_toStartOf="@+id/tvAddClassDisplay2"
+        app:layout_constraintTop_toBottomOf="@+id/tvAddClassDisplay2" />
+
+    <TextView
+        android:id="@+id/tvAddClassDisplay4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Start Time"
+        app:layout_constraintStart_toStartOf="@+id/tvAddClassDisplay3"
+        app:layout_constraintTop_toBottomOf="@+id/tvAddClassDisplay3" />
+
+    <TextView
+        android:id="@+id/tvAddClassDisplay5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="End Time"
+        app:layout_constraintStart_toStartOf="@+id/tvAddClassDisplay4"
+        app:layout_constraintTop_toBottomOf="@+id/tvAddClassDisplay4" />
+
+    <EditText
+        android:id="@+id/etAddClassName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:text="Name"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvAddClassDisplay1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/tvAddClassDisplay1" />
+
+    <EditText
+        android:id="@+id/etAddClassClassroom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:text="Name"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvAddClassDisplay2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/etAddClassName" />
+
+    <Button
+        android:id="@+id/btnAddClassAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="16dp"
+        android:text="Add"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spAddClassEndHour" />
+
+    <Button
+        android:id="@+id/btnAddClassCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Cancel"
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnAddClassAdd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnAddClassAdd" />
+
+    <Spinner
+        android:id="@+id/spAddClassDay"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/etAddClassClassroom"
+        app:layout_constraintTop_toBottomOf="@+id/etAddClassClassroom" />
+
+    <Spinner
+        android:id="@+id/spAddClassStartHour"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@+id/spAddClassDay"
+        app:layout_constraintTop_toBottomOf="@+id/spAddClassDay" />
+
+    <Spinner
+        android:id="@+id/spAddClassStartMinute"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/spAddClassStartHour"
+        app:layout_constraintTop_toTopOf="@+id/spAddClassStartHour" />
+
+    <Spinner
+        android:id="@+id/spAddClassEndHour"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@+id/spAddClassStartHour"
+        app:layout_constraintTop_toBottomOf="@+id/spAddClassStartHour" />
+
+    <Spinner
+        android:id="@+id/spAddClassEndMinute"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/spAddClassEndHour"
+        app:layout_constraintTop_toTopOf="@+id/spAddClassEndHour" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvListName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.057"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Software Engineering" />
+
+    <TextView
+        android:id="@+id/tvListClassroom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="@+id/tvListName"
+        app:layout_constraintTop_toBottomOf="@+id/tvListName"
+        tools:text="81454" />
+
+    <TextView
+        android:id="@+id/tvListDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/tvListClassroom"
+        app:layout_constraintTop_toBottomOf="@+id/tvListClassroom"
+        tools:text="Monday" />
+
+    <TextView
+        android:id="@+id/tvListStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvListDay"
+        app:layout_constraintStart_toEndOf="@+id/tvListDay"
+        tools:text="12:00" />
+
+    <TextView
+        android:id="@+id/tvListEndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvListUntil"
+        app:layout_constraintStart_toEndOf="@+id/tvListUntil"
+        tools:text="13:45" />
+
+    <TextView
+        android:id="@+id/tvListUntil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="~"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvListStartTime"
+        app:layout_constraintStart_toEndOf="@+id/tvListStartTime" />
+</androidx.constraintlayout.widget.ConstraintLayout>
