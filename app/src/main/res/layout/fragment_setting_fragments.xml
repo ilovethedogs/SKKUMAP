@@ -4,102 +4,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SettingFragment">
+    tools:context=".fragments.SettingFragments">
 
-    <RadioButton
-        android:id="@+id/radioBtnNotificationActivation"
+
+    <TimePicker
+        android:id="@+id/tpNoti"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Activate Notification"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/tvSettingDisplay1"
-        app:layout_constraintTop_toBottomOf="@+id/tvSettingDisplay1" />
+
+        android:scaleX="1"
+        android:scaleY="1"
+        android:timePickerMode="spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSettingDisplay2"
+        app:layout_constraintStart_toEndOf="@+id/tvSettingDisplay2"
+        app:layout_constraintTop_toTopOf="@+id/tvSettingDisplay2"></TimePicker>
 
     <TextView
         android:id="@+id/tvSettingDisplay1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="59dp"
         android:text="Notification Settings"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.158"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <RadioGroup
-        android:id="@+id/rgNotificationType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/radioBtnNotificationActivation"
-        app:layout_constraintTop_toBottomOf="@+id/radioBtnNotificationActivation">
-
-        <RadioButton
-            android:id="@+id/radioBtnLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Location based notification" />
-
-        <RadioButton
-            android:id="@+id/radioBtnTimeOnly"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Time based notification only" />
-    </RadioGroup>
 
     <TextView
         android:id="@+id/tvSettingDisplay2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Notification Time"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/rgNotificationType"
-        app:layout_constraintTop_toBottomOf="@+id/rgNotificationType" />
-
-    <EditText
-        android:id="@+id/editTextNumber3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tvSettingDisplay2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvSettingDisplay2" />
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="70dp"
+        android:text="Notify me"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/swtchNotiLoc" />
 
     <TextView
-        android:id="@+id/tvSettingDisplay3"
+        android:id="@+id/tvBefore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:text="Notification Method"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/radioBtnNotificationActivation"
-        app:layout_constraintTop_toBottomOf="@+id/tvSettingDisplay2" />
+        android:text="before class"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSettingDisplay2"
+        app:layout_constraintStart_toEndOf="@+id/tpNoti"
+        app:layout_constraintTop_toTopOf="@+id/tvSettingDisplay2" />
 
     <RadioGroup
         android:id="@+id/rgNotificationMethod"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="6dp"
         app:layout_constraintStart_toStartOf="@+id/tvSettingDisplay3"
-        app:layout_constraintTop_toBottomOf="@+id/tvSettingDisplay3"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/tvSettingDisplay3">
 
         <RadioButton
             android:id="@+id/radioBtnVibration"
-            android:layout_width="match_parent"
+            android:layout_width="158dp"
             android:layout_height="wrap_content"
             android:text="Vibration" />
 
@@ -114,6 +75,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Push Notification" />
+
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/tvSettingDisplay3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="54dp"
+        android:text="Notification Method"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tpNoti" />
+
+    <Switch
+        android:id="@+id/swtchNotiActivate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:minHeight="48dp"
+        android:text="Activate Notification"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSettingDisplay1" />
+
+    <Switch
+        android:id="@+id/swtchNotiLoc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="12dp"
+        android:minHeight="48dp"
+        android:text="Location Based Notification"
+        app:layout_constraintStart_toStartOf="@+id/swtchNotiActivate"
+        app:layout_constraintTop_toBottomOf="@+id/swtchNotiActivate" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
