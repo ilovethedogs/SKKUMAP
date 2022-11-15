@@ -35,6 +35,11 @@ public class Owner extends Application {
     private static volatile Owner singleton = null;
 
     private UserSetting mUs;
+
+    public UserSetting getmUs() {
+        return mUs;
+    }
+
     private TimeTable mTt;
     private File userFile;
     private String uid;

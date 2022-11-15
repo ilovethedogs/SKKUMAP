@@ -25,6 +25,8 @@ import com.google.android.material.snackbar.Snackbar;
 import swe2022.team6.skkumap.R;
 import swe2022.team6.skkumap.databinding.FragmentSettingFragmentsBinding;
 import swe2022.team6.skkumap.databinding.FragmentTimetableFragmentsBinding;
+import swe2022.team6.skkumap.dataclasses.Owner;
+import swe2022.team6.skkumap.dataclasses.UserSetting;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +37,9 @@ import swe2022.team6.skkumap.databinding.FragmentTimetableFragmentsBinding;
 
 public class SettingFragments extends Fragment {
     FragmentSettingFragmentsBinding binding;
+    private final Owner owner = Owner.getInstance();
+    private final UserSetting us = owner.getmUs();
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -83,6 +88,10 @@ public class SettingFragments extends Fragment {
     }
 
     void activateUI(boolean active) {
+        //클래스 업데이트
+        us.setNotiActivate(active);
+
+        //UI 업데이트
         binding.tpNoti.setEnabled(active);
         binding.swtchNotiLoc.setEnabled(active);
         binding.rgNotificationMethod.setEnabled(active);
@@ -97,9 +106,14 @@ public class SettingFragments extends Fragment {
         binding.tvSettingDisplay3.setTextColor(textColor);
         binding.tvBefore.setTextColor(textColor);
 
+
     }
 
     void tvBefore(boolean loc) {
+        //클래스 업데이트
+        us.setNotiLoc(loc);
+
+        //UI 업데이트
         if (loc)
             binding.tvBefore.setText("before departure");
         else
@@ -113,32 +127,58 @@ public class SettingFragments extends Fragment {
         binding = FragmentSettingFragmentsBinding.inflate(inflater, container, false);
         binding.tpNoti.setIs24HourView(true);
 
-        //TODO Firebase에서 불러오기
+        //TODO Firebase에서 클래스 불러오기
 
-        //activate 돼있는지에 따라 세부 설정 enable/disable
+        //notiActivate 초기 설정
+        binding.swtchNotiActivate.setChecked(us.isNotiActivate());
+        //activate 돼있는지에 따라 세부 설정 enable/disable, 클래스 업데이트
         activateUI(binding.swtchNotiActivate.isChecked());
-        binding.swtchNotiActivate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                                 @Override
-                                                                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                                     activateUI(b);
-                                                                 }
-                                                             }
+        binding.swtchNotiActivate.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        activateUI(b);
+                    }
+                }
         );
 
-        //location based 하는지에 따라 tv 텍스트 바꾸기
+        //location based 초기 설정
+        binding.swtchNotiActivate.setChecked(us.isNotiLoc());
+        //location based 하는지에 따라 tv 텍스트 바꾸기, 클래스 업데이트
         tvBefore(binding.swtchNotiLoc.isChecked());
-        binding.swtchNotiLoc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                            @Override
-                                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                                tvBefore(b);
-                                                            }
-                                                        }
+        binding.swtchNotiLoc.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        tvBefore(b);
+                    }
+                }
         );
 
-        //초기 시간 설정
-        binding.tpNoti.setHour(0);
-        binding.tpNoti.setMinute(15);
+        //시간 초기 설정
+        binding.tpNoti.setHour(us.getNotiHr());
+        binding.tpNoti.setMinute(us.getNotiMin());
+        //시간 바꼇을때 클래스 업데이트
+        binding.tpNoti.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                us.setNotiHr(hourOfDay);
+                us.setNotiMin(minute);
+            }
+        });
 
+        //알림 method 초기 설정
+        ((RadioButton)binding.rgNotificationMethod.getChildAt(us.getNotiMthd())).setChecked(true);
+        //알림 method 바꼇을 때 클래스 업데이트
+        binding.rgNotificationMethod.setOnCheckedChangeListener(
+                new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                        us.setNotiMthd(binding.rgNotificationMethod.indexOfChild(binding.getRoot().findViewById(i)));
+                    }
+                }
+
+        );
         return binding.getRoot();
     }
 }

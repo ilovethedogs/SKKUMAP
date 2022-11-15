@@ -1,10 +1,12 @@
 package swe2022.team6.skkumap.dataclasses;
 
 public class UserSetting {
+    //TODO set 할 때 firebase에 업데이트
     private boolean notiActivate = false;
     private int notiHr = 0;
-    private int notiMin = 0;
+    private int notiMin = 15;
     private boolean notiLoc = false;
+    private int notiMthd = 0;//0: vibration 1: sound 2: push
 
     public boolean isNotiActivate() {
         return notiActivate;
@@ -46,5 +48,5 @@ public class UserSetting {
         this.notiMthd = notiMthd;
     }
 
-    private int notiMthd = 0;//0: vibration 1: sound 2: push
+
 }
