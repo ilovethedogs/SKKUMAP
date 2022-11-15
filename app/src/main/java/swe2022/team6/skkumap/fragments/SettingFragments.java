@@ -1,6 +1,8 @@
 package swe2022.team6.skkumap.fragments;
 
 import android.app.AlertDialog;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -78,34 +80,65 @@ public class SettingFragments extends Fragment {
         View v = inflater.inflate(R.layout.fragment_setting_fragments, null);
 
 
+    }
 
+    void activateUI(boolean active) {
+        binding.tpNoti.setEnabled(active);
+        binding.swtchNotiLoc.setEnabled(active);
+        binding.rgNotificationMethod.setEnabled(active);
+        binding.rgNotificationMethod.getChildAt(0).setEnabled(active);
+        binding.rgNotificationMethod.getChildAt(1).setEnabled(active);
+        binding.rgNotificationMethod.getChildAt(2).setEnabled(active);
+        int textColor;
 
+        textColor = active ? Color.DKGRAY : Color.LTGRAY;
 
+        binding.tvSettingDisplay2.setTextColor(textColor);
+        binding.tvSettingDisplay3.setTextColor(textColor);
+        binding.tvBefore.setTextColor(textColor);
 
+    }
+
+    void tvBefore(boolean loc) {
+        if (loc)
+            binding.tvBefore.setText("before departure");
+        else
+            binding.tvBefore.setText("before classtime");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding= FragmentSettingFragmentsBinding.inflate(inflater, container, false);
+        binding = FragmentSettingFragmentsBinding.inflate(inflater, container, false);
         binding.tpNoti.setIs24HourView(true);
+
+        //TODO Firebase에서 불러오기
+
+        //activate 돼있는지에 따라 세부 설정 enable/disable
+        activateUI(binding.swtchNotiActivate.isChecked());
         binding.swtchNotiActivate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                      @Override
-                                                      public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                          Log.e("TAG", "switch checked");
-                                                          Toast.makeText(getActivity().getApplicationContext(), "switch", Toast.LENGTH_SHORT).show();
-                                                          if(b){
-
-                                                          }
-                                                          else{
-
-                                                          }
-                                                      }
-                                                  }
-
+                                                                 @Override
+                                                                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                                     activateUI(b);
+                                                                 }
+                                                             }
         );
-//        return inflater.inflate(R.layout.fragment_setting_fragments, container, false);
+
+        //location based 하는지에 따라 tv 텍스트 바꾸기
+        tvBefore(binding.swtchNotiLoc.isChecked());
+        binding.swtchNotiLoc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                            @Override
+                                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                                tvBefore(b);
+                                                            }
+                                                        }
+        );
+
+        //초기 시간 설정
+        binding.tpNoti.setHour(0);
+        binding.tpNoti.setMinute(15);
+
         return binding.getRoot();
     }
 }

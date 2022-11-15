@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
+        android:layout_marginStart="-10dp"
         android:scaleX="1"
         android:scaleY="1"
         android:timePickerMode="spinner"
@@ -33,18 +34,19 @@
         android:id="@+id/tvSettingDisplay2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="18dp"
         android:layout_marginTop="70dp"
         android:text="Notify me"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/swtchNotiActivate"
         app:layout_constraintTop_toBottomOf="@+id/swtchNotiLoc" />
 
     <TextView
         android:id="@+id/tvBefore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="before class"
-        android:textStyle="bold"
+        android:layout_marginStart="-10dp"
+
+        android:text="before classtime"
         app:layout_constraintBottom_toBottomOf="@+id/tvSettingDisplay2"
         app:layout_constraintStart_toEndOf="@+id/tpNoti"
         app:layout_constraintTop_toTopOf="@+id/tvSettingDisplay2" />
