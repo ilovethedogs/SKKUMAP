@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(binding.frameContainer.getId(), setFrag).commit();
         Owner owner = Owner.getInstance();
+        owner.setmActivity(this);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             owner.setUid(user.getUid());

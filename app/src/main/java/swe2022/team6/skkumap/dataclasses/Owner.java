@@ -1,5 +1,6 @@
 package swe2022.team6.skkumap.dataclasses;
 
+import android.app.Activity;
 import android.app.Application;
 import android.util.Log;
 import android.widget.Toast;
@@ -46,6 +47,16 @@ public class Owner extends Application {
     private FirebaseFirestore db;
     private DocumentSnapshot doc;
     private StorageReference sref;
+
+    public Activity getmActivity() {
+        return mActivity;
+    }
+
+    public void setmActivity(Activity mActivity) {
+        this.mActivity = mActivity;
+    }
+
+    private Activity mActivity=null;
 
     public static Owner getInstance() {
         if (singleton == null) {

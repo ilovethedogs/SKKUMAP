@@ -1,10 +1,13 @@
 package swe2022.team6.skkumap.fragments;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -39,6 +42,7 @@ public class SettingFragments extends Fragment {
     FragmentSettingFragmentsBinding binding;
     private final Owner owner = Owner.getInstance();
     private final UserSetting us = owner.getmUs();
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -114,15 +118,18 @@ public class SettingFragments extends Fragment {
         us.setNotiLoc(loc);
 
         //UI 업데이트
-        if (loc)
+        if (loc) {
+            ActivityCompat.requestPermissions(owner.getmActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, 0x0000001);
             binding.tvBefore.setText("before departure");
-        else
+        } else
             binding.tvBefore.setText("before classtime");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
         binding = FragmentSettingFragmentsBinding.inflate(inflater, container, false);
         binding.tpNoti.setIs24HourView(true);
@@ -168,13 +175,17 @@ public class SettingFragments extends Fragment {
         });
 
         //알림 method 초기 설정
-        ((RadioButton)binding.rgNotificationMethod.getChildAt(us.getNotiMthd())).setChecked(true);
+        ((RadioButton) binding.rgNotificationMethod.getChildAt(us.getNotiMthd())).setChecked(true);
         //알림 method 바꼇을 때 클래스 업데이트
         binding.rgNotificationMethod.setOnCheckedChangeListener(
                 new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup radioGroup, int i) {
                         us.setNotiMthd(binding.rgNotificationMethod.indexOfChild(binding.getRoot().findViewById(i)));
+                        if(us.getNotiMthd()==2) {
+                            //푸시알림 권한 (높은 API에서만 필요한가봄)
+                            ActivityCompat.requestPermissions(owner.getmActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, 0x0000001);
+                        }
                     }
                 }
 
