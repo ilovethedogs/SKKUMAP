@@ -36,7 +36,10 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        getSupportFragmentManager().beginTransaction().replace(binding.frameContainer.getId(), setFrag).commit();
+        // on start, display the time table
+        getSupportFragmentManager().beginTransaction().replace(binding.frameContainer.getId(), ttFrag).commit();
+
+        // set up user data
         Owner owner = Owner.getInstance();
         owner.setmActivity(this);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -48,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        else {
         }
 
         binding.navigation.setOnItemSelectedListener(item -> {

@@ -2,11 +2,13 @@ package swe2022.team6.skkumap.dataclasses;
 
 import android.app.Activity;
 import android.app.Application;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,6 +20,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -94,48 +97,90 @@ public class Owner extends Application {
     }
 
     public void setFirebase(FirebaseFirestore db, StorageReference st) throws IOException {
+        // user's file path is absolute and definite
         final String userFilePath = getFilesDir().getAbsolutePath() + this.uid + ".json";
         this.userFile = FileUtil.getFile(userFilePath);
+
+        // access to the db should always be possible
         this.db = db;
         this.sref = st;
+
+        // fetching or adding user's own document
         db.collection("users").document(uid)
                         .get()
-                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful())  {
-                                    DocumentSnapshot temp = task.getResult();
-                                    if (temp.exists()) {
-                                        doc = temp;
-                                        Log.d(TAG, "onComplete: query successful " + doc.getId());
-                                    }
-                                    else {
-                                        Log.d(TAG, "onComplete: query failed");
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot temp = task.getResult();
 
-                                        Gson gson = new Gson();
-                                        if (userFile == null) {
-                                            try {
-                                                gson.toJson(singleton, new FileWriter(userFilePath));
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
+                                if (temp.exists()) {
+                                    doc = temp;
+                                    Log.d(TAG, "onComplete: query successful " + doc.getId());
+                                } else {
+                                    Log.d(TAG, "onComplete: query failed");
 
-                                        Map<String, String> newDoc = new HashMap<>();
-                                        newDoc.put("uid", uid);
-                                        newDoc.put("settingUrl", "");
-                                        newDoc.put("timetableUrl", "");
+                                    Map<String, String> newDoc = new HashMap<>();
+                                    newDoc.put("uid", uid);
+                                    newDoc.put("OwnerFileUrl", "");
 
-                                        db.collection("users").document(uid)
-                                                .set(newDoc)
-                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void unused) {
-                                                    }
-                                                });
-                                    }
+                                    db.collection("users").document(uid)
+                                            .set(newDoc)
+                                            .addOnCompleteListener(newTask -> {
+                                                if (task.isSuccessful()) {
+                                                    doc = task.getResult();
+                                                    Log.d(TAG, "onComplete: query is finally successful " + doc.getId());
+                                                }
+                                                else {
+                                                    Log.e(TAG, "setFirebase: db error");
+                                                }
+                                            });
                                 }
                             }
                         });
+
+        if (this.userFile == null) {
+            Gson gson = new Gson();
+
+            final String OwnerFileUrl = doc.getString("OwnerFileUrl");
+            assert OwnerFileUrl != null;
+            if (OwnerFileUrl.equalsIgnoreCase("")) {
+                try {
+                    gson.toJson(singleton, new FileWriter(userFilePath));
+                    userFile = FileUtil.getFile(userFilePath);
+                    if (userFile == null) {
+                        Log.e(TAG, "setFirebase: god damn it!!!");
+                    }
+                    else {
+                        Uri userFileUri = Uri.fromFile(userFile);
+                        StorageReference userFileRef = sref.child(userFileUri.getLastPathSegment());
+                        UploadTask uploadTask = userFileRef.putFile(userFileUri);
+
+                        Task<Uri> UriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                            @Override
+                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                if (!task.isSuccessful())
+                                    throw task.getException();
+                                return userFileRef.getDownloadUrl();
+                            }
+                        })
+                        .addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                if (task.isSuccessful()) {
+                                    Uri downloadUri = task.getResult();
+                                }
+                                else {
+
+                                }
+                            }
+                        });
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else {
+
+        }
     }
 }

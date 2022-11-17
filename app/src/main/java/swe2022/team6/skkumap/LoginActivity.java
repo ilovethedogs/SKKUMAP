@@ -60,6 +60,10 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 String userTypedNumber = binding.etPhoneNumber.getText().toString();
                 Matcher matcher = phoneNumPattern.matcher(userTypedNumber);
                 if (matcher.find()) {
@@ -69,10 +73,6 @@ public class LoginActivity extends AppCompatActivity {
                 else {
                     binding.tv1.setText("Enter Phone number in valid format!! (010-0000-0000)");
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
             }
         });
 
