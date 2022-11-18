@@ -192,4 +192,6 @@ public class SettingFragments extends Fragment {
         );
         return binding.getRoot();
     }
+
+
 }
