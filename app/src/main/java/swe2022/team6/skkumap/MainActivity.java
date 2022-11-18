@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import swe2022.team6.skkumap.Utilities.FireBaseUtil;
 import swe2022.team6.skkumap.databinding.ActivityMainBinding;
 import swe2022.team6.skkumap.dataclasses.Owner;
 import swe2022.team6.skkumap.dataclasses.TimeTable;
@@ -28,8 +29,6 @@ public class MainActivity extends AppCompatActivity {
     private final SettingFragments setFrag = new SettingFragments();
     private final MapFragments mapFrag = new MapFragments();
 
-    private FirebaseStorage firebaseStorage;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,18 +41,7 @@ public class MainActivity extends AppCompatActivity {
         // set up user data
         Owner owner = Owner.getInstance();
         owner.setmActivity(this);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            owner.setUid(user.getUid());
-            firebaseStorage = FirebaseStorage.getInstance();
-            try {
-                owner.setFirebase(FirebaseFirestore.getInstance(), FirebaseStorage.getInstance().getReference());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-        }
+        FireBaseUtil.setFirebase();
 
         binding.navigation.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
