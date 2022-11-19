@@ -31,13 +31,11 @@ public class UserSetting {
 
     public void setNotiActivate(boolean notiActivate) {
         this.notiActivate = notiActivate;
-        try {
 
-            FireBaseUtil.syncUserSettingFile();
-        }
-        catch (IOException e) {
-            Log.e(TAG, "setNotiActivate: dd");
-        }
+
+        FireBaseUtil.syncUserSettingFile();
+
+
         FireBaseUtil.syncUserSettingDb();
     }
 

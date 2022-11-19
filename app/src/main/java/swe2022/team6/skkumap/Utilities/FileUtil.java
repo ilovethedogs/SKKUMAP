@@ -53,7 +53,10 @@ public class FileUtil {
         Gson gson = new Gson();
 
         try {
-            gson.toJson(owner.getmTt(), new FileWriter(userTtFilePath));
+            FileWriter fw = new FileWriter(userTtFileObj);
+            gson.toJson(owner.getmTt(), fw);
+            fw.flush();
+            fw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

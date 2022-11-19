@@ -69,29 +69,26 @@ public class FireBaseUtil {
                                         .addOnCompleteListener(newTask -> {
                                             if (newTask.isSuccessful()) {
                                                 Log.d(TAG, "onComplete: query is finally successful " + doc.getId());
-                                            }
-                                            else {
+                                            } else {
                                                 Log.e(TAG, "setFirebase: db error");
                                             }
                                         });
                             }
-                        }
-                        else {
+                        } else {
                             Log.d(TAG, "run: task failed");
                         }
                     });
 
             Log.d(TAG, "setFirebase: returning true");
             return true;
-        }
-        else {
+        } else {
             Log.e(TAG, "setFirebase: firebase user error");
             return false;
         }
     }
 
     // db to local file
-    public static void syncUserSettingFile() throws IOException {
+    public static void syncUserSettingFile() {
         final File[] userFile = {FileUtil.getSettingFileObj()};
 
         Thread thread = new Thread() {
@@ -112,8 +109,7 @@ public class FireBaseUtil {
                             // db에서 가져올 file이 없음......
                             FileUtil.exportUserSettingFile();
                             syncUserSettingDb();
-                        }
-                        else {
+                        } else {
                             // download
                             Log.d(TAG, "run: yes2");
                             if (userFile[0].exists()) userFile[0].delete();
@@ -156,7 +152,7 @@ public class FireBaseUtil {
                 owner.db.collection("users").document(owner.uid).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot doc = task.getResult();
-                        
+
                         if (doc.exists()) {
                             DocumentReference docRef = doc.getReference();
                             final String userFileUrl = doc.getString("settingFileUrl");
@@ -179,7 +175,7 @@ public class FireBaseUtil {
                                             Log.d(TAG, "run: fwwfefefefe");
                                         });
                             }
-                            
+
                             StorageReference userFileRef = owner.sref.child("setting/" + owner.uid + "_setting.json");
                             Uri file = Uri.fromFile(userFile[0]);
                             UploadTask uploadTask = userFileRef.putFile(file);
@@ -199,7 +195,7 @@ public class FireBaseUtil {
         thread.start();
     }
 
-    public static void syncUserTtFile() throws IOException {
+    public static void syncUserTtFile() {
         final File[] userFile = {FileUtil.getTtFileObj()};
 
         Thread thread = new Thread() {
@@ -207,77 +203,61 @@ public class FireBaseUtil {
             public void run() {
                 Owner owner = Owner.getInstance();
 
-                Gson gson = new Gson();
+                if (userFile[0].exists()) {
+                    if (userFile[0].delete()) {
+                        userFile[0] = FileUtil.getTtFileObj();
+                    }
+                }
+                FileUtil.exportUserTtFile();
 
                 owner.db.collection("users").document(owner.uid).get().addOnCompleteListener(task -> {
-                    DocumentSnapshot doc = task.getResult();
-                    if (doc.exists()) {
-                        final String ttFileUrl = doc.getString("ttFileUrl");
-                        if (ttFileUrl != null && ttFileUrl.equalsIgnoreCase("")) {
-                            // db에서 가져올 file이 없음......
-                            FileUtil.exportUserTtFile();
-                            syncUserTtDb();
-                        }
-                        else {
-                            // download
-                            if (userFile[0].exists()) userFile[0].delete();
-                            StorageReference userFileRef = owner.sref.child("tt/" + owner.uid + "_tt.json");
-                            userFileRef.getFile(userFile[0])
-                                    .addOnSuccessListener(taskSnapshot -> {
-                                        try {
-                                            Reader reader = new BufferedReader(new FileReader(FileUtil.getUserTtFilePath()));
-                                            owner.mTt = gson.fromJson(reader, TimeTable.class);
-                                            reader.close();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                    })
-                                    .addOnFailureListener(e -> Log.e(TAG, "onFailure1: damn it"));
-                        }
-                    }
-                });
-            }
-        };
-        thread.start();
-    }
-
-    public static void syncUserTtDb() {
-        final File[] userFile = {FileUtil.getTtFileObj()};
-
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                Owner owner = Owner.getInstance();
-
-                if (!userFile[0].exists()) {
-                    FileUtil.exportUserTtFile();
-                }
-
-                owner.db.collection("users").document(owner.uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
                         DocumentSnapshot doc = task.getResult();
 
                         if (doc.exists()) {
                             DocumentReference docRef = doc.getReference();
                             final String userFileUrl = doc.getString("ttFileUrl");
 
-                            if (userFileUrl != null && userFileUrl.equalsIgnoreCase("")) {
-                                StorageReference userFileRef = owner.sref.child("tt/" + owner.uid + "_tt.json");
-                                Uri file = Uri.fromFile(userFile[0]);
-                                UploadTask uploadTask = userFileRef.putFile(file);
+                            if (userFileUrl != null && !userFileUrl.equalsIgnoreCase("")) {
+                                StorageReference target = owner.sref.child("tt/" + owner.uid + "_tt.json");
 
-                                uploadTask.addOnFailureListener(e -> Log.e(TAG, "onFailure2: damn it"))
-                                        .addOnSuccessListener(taskSnapshot -> docRef.update("ttFileUrl", userFileRef.getDownloadUrl().toString())
-                                                .addOnSuccessListener(unused -> Log.d(TAG, "onSuccess: update succeed"))
-                                                .addOnFailureListener(e -> Log.d(TAG, "onFailure: update failed"))
-                                        );
+                                target.delete()
+                                        .addOnSuccessListener(unused -> {
+                                            Log.d(TAG, "run: yeryerterter");
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.e(TAG, "run: ffwegwaegawegwe");
+                                        });
+                                docRef.update("ttFileUrl", "")
+                                        .addOnSuccessListener(unused -> {
+                                            Log.d(TAG, "run: ssssss");
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.d(TAG, "run: fwwfefefefe");
+                                        });
                             }
+
+                            StorageReference userFileRef = owner.sref.child("tt/" + owner.uid + "_tt.json");
+                            Uri file = Uri.fromFile(userFile[0]);
+                            UploadTask uploadTask = userFileRef.putFile(file);
+
+                            uploadTask.addOnFailureListener(e -> Log.e(TAG, "onFailure3: damn it"))
+                                    .addOnSuccessListener(taskSnapshot -> docRef.update("settingFileUrl", userFileRef.getDownloadUrl().toString())
+                                            .addOnSuccessListener(unused -> {
+                                                Log.d(TAG, "run: update succeed");
+                                            })
+                                            .addOnFailureListener(e -> Log.d(TAG, "onFailure: update failed"))
+                                    );
                         }
                     }
                 });
             }
         };
         thread.start();
+
+    }
+
+    public static void syncUserTtDb() {
+
     }
 }

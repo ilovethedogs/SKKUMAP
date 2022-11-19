@@ -1,11 +1,15 @@
 package swe2022.team6.skkumap.dataclasses;
 
+import android.util.Log;
+
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class TimeTable {
+    private static final String TAG = "TimeTable";
+
     private Map<Class.Week, TreeMap<Class.classTime, Class>> mClassTable;
     private final ClassComparator comp;
 
@@ -47,6 +51,7 @@ public class TimeTable {
 
         boolean firstCondition = precedingClass == null || Class.classTime.lesser(newClass.getBegTime(), precedingClass.getValue().getEndTime());
         boolean secondCondition = followingClass == null || Class.classTime.lesser(newClass.getEndTime(), followingClass.getValue().getBegTime());
+        Log.d(TAG, "addClass: " + firstCondition + ' ' + secondCondition);
         if (firstCondition && secondCondition) {
             mClassTable.get(key).put(newClass.getBegTime(), newClass);
         }
