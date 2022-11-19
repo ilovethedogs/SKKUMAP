@@ -188,12 +188,14 @@ public class TimetableFragments extends Fragment
         binding = FragmentTimetableFragmentsBinding.inflate(inflater, container, false);
         binding.btnAddClass.setOnClickListener(this);
 
-        //classList = new ArrayList<Class>();
+        /*
+        classList = new ArrayList<Class>();
 
-        //adapter = new ClassAdapter<>(classList);
-        //binding.rvTimeTable.setAdapter(adapter);
-        //LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        //binding.rvTimeTable.setLayoutManager(llm);
+        adapter = new ClassAdapter<>(classList);
+        binding.rvTimeTable.setAdapter(adapter);
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        binding.rvTimeTable.setLayoutManager(llm);
+         */
 
         return binding.getRoot();
     }

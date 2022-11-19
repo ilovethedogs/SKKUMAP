@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import swe2022.team6.skkumap.Utilities.FireBaseUtil;
 import swe2022.team6.skkumap.databinding.ActivityMainBinding;
 import swe2022.team6.skkumap.dataclasses.Owner;
 import swe2022.team6.skkumap.dataclasses.TimeTable;
@@ -28,6 +29,7 @@ import swe2022.team6.skkumap.fragments.SettingFragments;
 import swe2022.team6.skkumap.fragments.TimetableFragments;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
 
     private ActivityMainBinding binding;
 
@@ -35,26 +37,25 @@ public class MainActivity extends AppCompatActivity {
     private final SettingFragments setFrag = new SettingFragments();
     private final MapFragments mapFrag = new MapFragments();
 
-    private FirebaseStorage firebaseStorage;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        getSupportFragmentManager().beginTransaction().replace(binding.frameContainer.getId(), setFrag).commit();
+        // on start, display the time table
+        getSupportFragmentManager().beginTransaction().replace(binding.frameContainer.getId(), ttFrag).commit();
+
+        // set up user data
         Owner owner = Owner.getInstance();
         owner.setmActivity(this);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            owner.setUid(user.getUid());
-            firebaseStorage = FirebaseStorage.getInstance();
-            try {
-                owner.setFirebase(FirebaseFirestore.getInstance(), FirebaseStorage.getInstance().getReference());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        FireBaseUtil.setFirebase();
+        Log.d(TAG, "onCreate: uid " + owner.uid);
+        try {
+            FireBaseUtil.syncUserSettingFile();
+            FireBaseUtil.syncUserTtFile();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         createNotificationChannel();//푸시알림 채널 설정

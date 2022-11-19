@@ -21,22 +21,68 @@
         android:id="@+id/btnAddClass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="128dp"
+        android:layout_marginBottom="48dp"
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvTimeTable"
-        app:layout_constraintVertical_bias="0.09" />
+        app:layout_constraintTop_toBottomOf="@+id/rvTimeTableMon" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvTimeTable"
-        android:layout_width="398dp"
-        android:layout_height="390dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/rvTimeTableMon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTimeTableTue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/rvTimeTableMon"
+        app:layout_constraintStart_toEndOf="@+id/rvTimeTableMon"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTimeTableWed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/rvTimeTableTue"
+        app:layout_constraintStart_toEndOf="@+id/rvTimeTableTue"
+        app:layout_constraintTop_toTopOf="@+id/rvTimeTableTue" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTimeTableThu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/rvTimeTableWed"
+        app:layout_constraintStart_toEndOf="@+id/rvTimeTableWed"
+        app:layout_constraintTop_toTopOf="@+id/rvTimeTableWed" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTimeTableFri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/rvTimeTableThu"
+        app:layout_constraintStart_toEndOf="@+id/rvTimeTableThu"
+        app:layout_constraintTop_toTopOf="@+id/rvTimeTableThu" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTimeTableSat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/rvTimeTableFri"
+        app:layout_constraintStart_toEndOf="@+id/rvTimeTableFri"
+        app:layout_constraintTop_toTopOf="@+id/rvTimeTableFri" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTimeTableSun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/rvTimeTableSat"
+        app:layout_constraintStart_toEndOf="@+id/rvTimeTableSat"
+        app:layout_constraintTop_toTopOf="@+id/rvTimeTableSat" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
