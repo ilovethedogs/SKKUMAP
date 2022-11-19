@@ -15,43 +15,38 @@ public class FileUtil {
     
     private static Owner owner = Owner.getInstance();
 
-    private static final String userFilePath = owner.getFilesDir().getAbsolutePath() + owner.uid + ".json";
+    private static final String userSettingFilePath = owner.getFilesDir().getAbsolutePath() + '/' + owner.uid + "_setting.json";
+    private static final String userTtFilePath = owner.getFilesDir().getAbsolutePath() + '/' + owner.uid + "_tt.json";
+    private static final File userSettingFileObj = new File(userSettingFilePath);
+    private static final File userTtFileObj = new File(userTtFilePath);
 
-    public static File getFileObj() throws IOException {
-        final File[] result = {null};
+    public static File getSettingFileObj() {
+        return userSettingFileObj;
+    }
 
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                result[0] = new File(userFilePath);
-            }
-        };
-        thread.start();
+    public static File getTtFileObj() {
+        return userTtFileObj;
+    }
 
+    public static void exportUserSettingFile() {
+        if (userSettingFileObj.exists()) userSettingFileObj.delete();
+        Gson gson = new Gson();
         try {
-            thread.join();
-
-            if (!result[0].exists()) {
-                return null;
-            }
-            else {
-                return result[0];
-            }
-        }
-        catch (InterruptedException e) {
-            Log.e(TAG, "getFile:");
-            return null;
+            gson.toJson(owner.getmUs(), new FileWriter(userSettingFilePath));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public static void exportFile() {
+    public static void exportUserTtFile() {
+        if (userTtFileObj.exists()) userTtFileObj.delete();
         Thread thread = new Thread() {
             @Override
             public void run() {
                 Gson gson = new Gson();
 
                 try {
-                    gson.toJson(owner, new FileWriter(userFilePath));
+                    gson.toJson(owner.getmTt(), new FileWriter(userTtFilePath));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -60,14 +55,15 @@ public class FileUtil {
         thread.start();
     }
 
-    public static void exportFileJoining() {
+    public static void exportUserSettingFileJoining() {
+        if (userSettingFileObj.exists()) userSettingFileObj.delete();
         Thread thread = new Thread() {
             @Override
             public void run() {
                 Gson gson = new Gson();
 
                 try {
-                    gson.toJson(owner, new FileWriter(userFilePath));
+                    gson.toJson(owner.getmUs(), new FileWriter(userSettingFilePath));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -83,24 +79,52 @@ public class FileUtil {
         }
     }
 
-    public static void importFile() {
+    public static void exportUserTtFileJoining() {
+        if (userTtFileObj.exists()) userTtFileObj.delete();
         Thread thread = new Thread() {
             @Override
             public void run() {
                 Gson gson = new Gson();
 
                 try {
-                    String path = String.valueOf(userFilePath);
+                    gson.toJson(owner.getmTt(), new FileWriter(userTtFilePath));
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
+        };
+        thread.start();
+
+        try {
+            thread.join();
+        }
+        catch (InterruptedException e) {
+            Log.e(TAG, "exportFileJoining: ");
         }
     }
 
-    public static void importFileJoining() {
-
+    /*
+    public static boolean importFile() {
+        if (!userFileObj.exists()) return false;
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                Gson gson = new Gson();
+            }
+        };
+        return true;
     }
 
-    public static String getUserFilePath() {
-        return userFilePath;
+    public static boolean importFileJoining() {
+        return true;
+    }
+     */
+
+    public static String getUserSettingFilePath() {
+        return userSettingFilePath;
+    }
+
+    public static String getUserTtFilePath() {
+        return userTtFilePath;
     }
 }

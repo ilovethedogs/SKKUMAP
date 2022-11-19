@@ -3,6 +3,7 @@ package swe2022.team6.skkumap;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,6 +23,7 @@ import swe2022.team6.skkumap.fragments.SettingFragments;
 import swe2022.team6.skkumap.fragments.TimetableFragments;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
 
     private ActivityMainBinding binding;
 
@@ -42,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
         Owner owner = Owner.getInstance();
         owner.setmActivity(this);
         FireBaseUtil.setFirebase();
+        Log.d(TAG, "onCreate: uid " + owner.uid);
+        try {
+            FireBaseUtil.syncUserSettingFile();
+            FireBaseUtil.syncUserTtFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         binding.navigation.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {

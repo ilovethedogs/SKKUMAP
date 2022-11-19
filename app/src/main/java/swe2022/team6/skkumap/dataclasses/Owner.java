@@ -35,21 +35,20 @@ import swe2022.team6.skkumap.Utilities.FileUtil;
 
 public class Owner extends Application {
     private static final String TAG = "Owner";
-    
+
     private static volatile Owner singleton = null;
 
-    private UserSetting mUs;
+    public UserSetting mUs;
 
     public UserSetting getmUs() {
         return mUs;
     }
+    public TimeTable getmTt() { return mTt; }
 
-    private TimeTable mTt;
-    private File userFile;
+    public TimeTable mTt;
 
     public String uid;
     public FirebaseFirestore db;
-    public DocumentSnapshot doc;
     public StorageReference sref;
 
     public Activity getmActivity() {
@@ -92,6 +91,4 @@ public class Owner extends Application {
     public void printTimeTable() {
         mTt.printTable();
     }
-
-
 }
