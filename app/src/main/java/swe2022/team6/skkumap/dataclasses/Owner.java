@@ -76,6 +76,7 @@ public class Owner extends Application {
         super.onCreate();
         singleton = this;
         mUs = new UserSetting();
+        Log.e("TAG","mus: "+ mUs.getNotiMthd()+"");
         mTt = new TimeTable();
     }
 

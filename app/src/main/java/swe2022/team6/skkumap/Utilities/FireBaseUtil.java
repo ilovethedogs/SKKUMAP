@@ -35,14 +35,13 @@ import swe2022.team6.skkumap.dataclasses.UserSetting;
 
 public class FireBaseUtil {
     private static final String TAG = "FireBaseUtil";
-    
-    private static Owner owner = Owner.getInstance();
 
     public static boolean setFirebase() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         Log.d(TAG, "setFirebase: starting set up firebase");
 
         if (user != null) {
+            Owner owner = Owner.getInstance();
             owner.uid = user.getUid();
             owner.db = FirebaseFirestore.getInstance();
             owner.sref = FirebaseStorage.getInstance().getReference();
@@ -100,6 +99,8 @@ public class FireBaseUtil {
             public void run() {
                 Gson gson = new Gson();
 
+                Owner owner = Owner.getInstance();
+
                 owner.db.collection("users").document(owner.uid).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot doc = task.getResult();
@@ -127,7 +128,7 @@ public class FireBaseUtil {
                                             e.printStackTrace();
                                         }
                                     })
-                                    .addOnFailureListener(e -> Log.e(TAG, "onFailure: damn it"));
+                                    .addOnFailureListener(e -> Log.e(TAG, "onFailure4: damn it"));
                         }
                     }
                 });
@@ -143,30 +144,53 @@ public class FireBaseUtil {
         Thread thread = new Thread() {
             @Override
             public void run() {
-                if (!userFile[0].exists()) {
-                    FileUtil.exportUserSettingFile();
+                Owner owner = Owner.getInstance();
+
+                if (userFile[0].exists()) {
+                    if (userFile[0].delete()) {
+                        userFile[0] = FileUtil.getSettingFileObj();
+                    }
                 }
+                FileUtil.exportUserSettingFile();
 
                 owner.db.collection("users").document(owner.uid).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot doc = task.getResult();
+                        
                         if (doc.exists()) {
                             DocumentReference docRef = doc.getReference();
                             final String userFileUrl = doc.getString("settingFileUrl");
 
-                            if (userFileUrl != null && userFileUrl.equalsIgnoreCase("")) {
-                                StorageReference userFileRef = owner.sref.child("setting/" + owner.uid + "_setting.json");
-                                Uri file = Uri.fromFile(userFile[0]);
-                                UploadTask uploadTask = userFileRef.putFile(file);
+                            if (userFileUrl != null && !userFileUrl.equalsIgnoreCase("")) {
+                                StorageReference target = owner.sref.child("setting/" + owner.uid + "_setting.json");
 
-                                uploadTask.addOnFailureListener(e -> Log.e(TAG, "onFailure: damn it"))
-                                        .addOnSuccessListener(taskSnapshot -> docRef.update("settingFileUrl", userFileRef.getDownloadUrl().toString())
-                                                .addOnSuccessListener(unused -> {
-                                                    Log.d(TAG, "run: update succeed");
-                                                })
-                                                .addOnFailureListener(e -> Log.d(TAG, "onFailure: update failed"))
-                                        );
+                                target.delete()
+                                        .addOnSuccessListener(unused -> {
+                                            Log.d(TAG, "run: yeryerterter");
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.e(TAG, "run: ffwegwaegawegwe");
+                                        });
+                                docRef.update("settingFileUrl", "")
+                                        .addOnSuccessListener(unused -> {
+                                            Log.d(TAG, "run: ssssss");
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.d(TAG, "run: fwwfefefefe");
+                                        });
                             }
+                            
+                            StorageReference userFileRef = owner.sref.child("setting/" + owner.uid + "_setting.json");
+                            Uri file = Uri.fromFile(userFile[0]);
+                            UploadTask uploadTask = userFileRef.putFile(file);
+
+                            uploadTask.addOnFailureListener(e -> Log.e(TAG, "onFailure3: damn it"))
+                                    .addOnSuccessListener(taskSnapshot -> docRef.update("settingFileUrl", userFileRef.getDownloadUrl().toString())
+                                            .addOnSuccessListener(unused -> {
+                                                Log.d(TAG, "run: update succeed");
+                                            })
+                                            .addOnFailureListener(e -> Log.d(TAG, "onFailure: update failed"))
+                                    );
                         }
                     }
                 });
@@ -181,6 +205,8 @@ public class FireBaseUtil {
         Thread thread = new Thread() {
             @Override
             public void run() {
+                Owner owner = Owner.getInstance();
+
                 Gson gson = new Gson();
 
                 owner.db.collection("users").document(owner.uid).get().addOnCompleteListener(task -> {
@@ -206,7 +232,7 @@ public class FireBaseUtil {
                                             e.printStackTrace();
                                         }
                                     })
-                                    .addOnFailureListener(e -> Log.e(TAG, "onFailure: damn it"));
+                                    .addOnFailureListener(e -> Log.e(TAG, "onFailure1: damn it"));
                         }
                     }
                 });
@@ -221,6 +247,8 @@ public class FireBaseUtil {
         Thread thread = new Thread() {
             @Override
             public void run() {
+                Owner owner = Owner.getInstance();
+
                 if (!userFile[0].exists()) {
                     FileUtil.exportUserTtFile();
                 }
@@ -239,7 +267,7 @@ public class FireBaseUtil {
                                 Uri file = Uri.fromFile(userFile[0]);
                                 UploadTask uploadTask = userFileRef.putFile(file);
 
-                                uploadTask.addOnFailureListener(e -> Log.e(TAG, "onFailure: damn it"))
+                                uploadTask.addOnFailureListener(e -> Log.e(TAG, "onFailure2: damn it"))
                                         .addOnSuccessListener(taskSnapshot -> docRef.update("ttFileUrl", userFileRef.getDownloadUrl().toString())
                                                 .addOnSuccessListener(unused -> Log.d(TAG, "onSuccess: update succeed"))
                                                 .addOnFailureListener(e -> Log.d(TAG, "onFailure: update failed"))

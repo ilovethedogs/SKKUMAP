@@ -51,7 +51,11 @@ public class MainActivity extends AppCompatActivity {
         owner.setmActivity(this);
         FireBaseUtil.setFirebase();
         Log.d(TAG, "onCreate: uid " + owner.uid);
+        owner.addClassToTimeTable("class1", "room1", 0, 0, 0, 1, 1);
+        owner.addClassToTimeTable("class2", "room2", 1, 2, 2, 2, 2);
+        owner.addClassToTimeTable("class3", "room3", 0, 2, 3, 3, 3);
         try {
+            Log.e("TAG",owner.mTt.toString()+"");
             FireBaseUtil.syncUserSettingFile();
             FireBaseUtil.syncUserTtFile();
         } catch (IOException e) {
